@@ -1,0 +1,31 @@
+{% extends 'base.html' %} {% load static %}
+
+<!-- statics -->
+{% load static %}
+
+<!-- block title -->
+{% block title %} My Stored Posts {% endblock %}
+
+<!-- block css -->
+{% block css %}
+<link rel="stylesheet" href="{% static 'blog/read-later.css' %}" />
+{% endblock %}
+
+<!-- block content -->
+{% block content %}
+<section id="stored-posts">
+  {% if posts %}
+  <ul>
+    {% for post in posts %}
+    <li>
+      <a href="{% url 'single-post-page' post.slug %}">{{post.title}}</a>
+    </li>
+    {% endfor %}
+  </ul>
+  {% endif %}
+  <!-- noposts -->
+  {% if not posts %}
+  <p>No stored posts!</p>
+  {% endif %}
+</section>
+{% endblock %}

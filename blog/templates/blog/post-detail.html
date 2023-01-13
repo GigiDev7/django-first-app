@@ -1,0 +1,79 @@
+{% extends 'base.html' %} {% load static %}
+
+<!-- block title -->
+{% block title %} {{post.title}} {% endblock %}
+
+<!-- block css -->
+{% block css %}
+<link rel="stylesheet" href="{% static 'blog/post-detail.css' %}" />
+{% endblock %}
+
+<!-- block content -->
+{% block content %}
+<section id="summary">
+  <h2>{{post.title}}</h2>
+  <div id="tags">
+    {% for tag in tags %}
+    <p class="tag">{{tag.caption}}</p>
+    {% endfor %}
+  </div>
+  <div id="read-later">
+    <form action="{% url 'read-later' %}" method="post">
+      {% csrf_token %}
+      <input type="hidden" name="post_id" value="{{post.id}}" />
+      <button>
+        {% if is_saved %}
+        <!-- if -->
+        Remove from 'Read Later'
+        <!--  else -->
+        {% else %} Read Later
+        <!-- else -->
+        {% endif %}
+      </button>
+    </form>
+  </div>
+  <article>
+    {% if post.image %}
+    <img src="{{post.image.url}}" alt="image" />
+    {% endif %}
+    <address>
+      <a href="mailto:{{post.author.email_address}}">
+        {{post.author.first_name|title}} {{post.author.last_name|title}}
+      </a>
+    </address>
+    <div>Last updated on <time>{{post.date|date:'d M Y'}}</time></div>
+  </article>
+</section>
+
+<main>{{post.content|linebreaks}}</main>
+
+{% if comments %}
+<section id="comments">
+  <ul>
+    {% for comment in comments %}
+    <li>
+      <h2>{{comment.username}}</h2>
+      <p>{{comment.text|linebreaks}}</p>
+    </li>
+    {% endfor %}
+  </ul>
+</section>
+{% endif %}
+
+<div>
+  <form
+    method="post"
+    action="{% url 'single-post-page' post.slug %}"
+    id="comment-form"
+  >
+    {% csrf_token %}
+    <!-- loop -->
+    {% for field in form %}
+    <div class="form-control">
+      {{field.label_tag}} {{field}} {{field.errors}}
+    </div>
+    {% endfor %}
+    <button>Add Comment</button>
+  </form>
+</div>
+{% endblock %}

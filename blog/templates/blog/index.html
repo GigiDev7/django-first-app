@@ -1,0 +1,40 @@
+{% extends 'base.html' %} {% load static %}
+
+<!-- block title -->
+{% block title %} My Blog {% endblock %}
+
+<!-- block css -->
+{% block css %}
+<link rel="stylesheet" href="{% static 'blog/index.css' %}" />
+<link rel="stylesheet" href="{% static 'blog/post.css' %}" />
+{% endblock %}
+
+<!-- block content -->
+{% block content %}
+
+<section id="welcome">
+  <header>
+    <img src="" alt="Image" />
+    <h2>BLOG</h2>
+  </header>
+  <p>Hi, i love to blog</p>
+</section>
+
+<section id="latest-posts">
+  <h2>My latest posts</h2>
+
+  <ul>
+    {% for post in posts %}
+    <!-- loop -->
+    {% include 'blog/includes/post.html'%}
+    <!-- loop -->
+    {% endfor %}
+  </ul>
+</section>
+
+<section id="about">
+  <h2>What I Do</h2>
+  <p>Love programming</p>
+  <p>My goal is to leatn python</p>
+</section>
+{% endblock %}
